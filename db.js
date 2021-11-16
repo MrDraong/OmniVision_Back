@@ -17,7 +17,7 @@ async function query(sql, params) {
   } catch (error) {
     console.error("Impossible de se connecter, erreur suivante :", error);
   }
-  const [results] = await sequelize.execute(sql, params);
+  const [results] = await sequelize.query(sql, params);
 
   return results;
 }
