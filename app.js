@@ -1,7 +1,7 @@
 const express = require("express");
 require("dotenv").config();
 
-const chantierRoutes = require("./routes/chantier");
+const chantierRoutes = require("./routes/chantierRoute");
 
 const app = express();
 
