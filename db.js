@@ -13,7 +13,7 @@ const sequelize = new Sequelize(
 async function query(sql, params) {
   try {
     sequelize.authenticate();
-    console.log("Connecté à la BDD !");
+    console.log("Authentifié");
   } catch (error) {
     console.error("Impossible de se connecter, erreur suivante :", error);
   }
