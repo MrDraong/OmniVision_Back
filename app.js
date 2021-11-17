@@ -21,10 +21,11 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use("/api/v1/chantier", chantierRoutes);
+app.use("/api/v1/auth", userRoutes);
+
 app.use("/api/v1/", function (req, res) {
   res.send("Bienvenidos 🐱‍🚀");
 });
-app.use("/api/v1/chantier", chantierRoutes);
-app.use("/api/v1/auth", userRoutes);
 
 module.exports = app;

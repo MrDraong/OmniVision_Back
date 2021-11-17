@@ -1,5 +1,6 @@
 const db = require("../db.js");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 exports.signup = async (req, res, next) => {
   bcrypt.hash(req.body.password, 10).then((hash) => {
@@ -24,9 +25,10 @@ exports.signup = async (req, res, next) => {
 };
 
 exports.login = async (req, res, next) => {
-  const queryString = `SELECT * FROM USER WHERE identifiant_utilisateur = "${req.body.pseudo}""`;
+  const queryString = `SELECT * FROM utilisateur WHERE identifiant_utilisateur = "${req.body.pseudo}"`;
   db.query(queryString)
     .then((user) => {
+      user = user[0];
       if (!user) {
         return res.status(401).json({
           error: "User not found!",
@@ -40,13 +42,13 @@ exports.login = async (req, res, next) => {
               error: "Incorrect password!",
             });
           }
-          const token = "test"; /*jwt.sign(
+          const token = jwt.sign(
             { userId: user.id_utilisateur },
-            "RANDOM_TOKEN_SECRET",
+            process.env.JWT_PHRASE,
             {
               expiresIn: "24h",
             }
-          );*/
+          );
           res.status(200).json({
             userId: user.id_utilisateur,
             token: token,
