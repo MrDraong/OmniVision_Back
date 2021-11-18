@@ -2,7 +2,7 @@ const db = require("../db.js");
 
 module.exports = class Chantier {
   async getAllChantiers(req, res, next) {
-    const queryString = "SELECT * FROM chantier";
+    const queryString = "SELECT * FROM V_chantier_incidents";
 
     try {
       const results = await db.query(queryString);
@@ -18,7 +18,7 @@ module.exports = class Chantier {
   }
 
   async getOneChantier(req, res, next) {
-    const queryString = `SELECT * FROM chantier WHERE id_chantier = ${req.params.id_chantier}`;
+    const queryString = `SELECT * FROM V_chantier_incidents WHERE id_chantier = ${req.params.id_chantier}`;
 
     try {
       const results = await db.query(queryString);
