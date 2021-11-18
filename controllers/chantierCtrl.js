@@ -48,7 +48,7 @@ module.exports = class Chantier {
   }
 
   async getIncident(req, res, next) {
-    const queryString = `SELECT * FROM incident WHERE id_chantier = ${req.params.id_chantier}`;
+    const queryString = `SELECT * FROM v_chantier_incidents WHERE id_chantier = ${req.params.id_chantier} ORDER BY date_capture LIMIT 1`;
 
     try {
       const results = await db.query(queryString);
