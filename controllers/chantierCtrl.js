@@ -9,7 +9,8 @@ module.exports = class Chantier {
       if (results == "") {
         res.status(404).json({ message: "No result found" });
       } else {
-        res.status(200).json(results);
+        const chantiers = { chantiers: results };
+        res.status(200).json(chantiers);
       }
     } catch (error) {
       next(error);
@@ -24,7 +25,7 @@ module.exports = class Chantier {
       if (results == "") {
         res.status(404).json({ message: "No result found" });
       } else {
-        res.status(200).json(results);
+        res.status(200).json(results[0]);
       }
     } catch (error) {
       next(error);
