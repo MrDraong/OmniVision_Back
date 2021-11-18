@@ -2,7 +2,7 @@ const db = require("../db.js");
 
 module.exports = class Chantier {
   async getAllChantiers(req, res, next) {
-    const queryString = "SELECT * FROM V_chantier_incidents";
+    const queryString = "SELECT * FROM chantier";
 
     try {
       const results = await db.query(queryString);
@@ -18,7 +18,7 @@ module.exports = class Chantier {
   }
 
   async getOneChantier(req, res, next) {
-    const queryString = `SELECT * FROM V_chantier_incidents WHERE id_chantier = ${req.params.id_chantier}`;
+    const queryString = `SELECT * FROM chantier WHERE id_chantier = ${req.params.id_chantier}`;
 
     try {
       const results = await db.query(queryString);
@@ -41,6 +41,21 @@ module.exports = class Chantier {
         res.status(404).json({ message: "Can't insert" });
       } else {
         res.status(200).json(results);
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getIncident(req, res, next) {
+    const queryString = `SELECT * FROM incident WHERE id_chantier = ${req.params.id_chantier}`;
+
+    try {
+      const results = await db.query(queryString);
+      if (results == "") {
+        res.status(404).json({ message: "No result found" });
+      } else {
+        res.status(200).json(results[0]);
       }
     } catch (error) {
       next(error);
