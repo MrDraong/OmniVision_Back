@@ -2,15 +2,20 @@ const db = require("../db.js");
 
 module.exports = class Chantier {
   async getAllChantiers(req, res, next) {
-    const queryString = "SELECT * FROM chantier";
+    const queryStringChantier = "SELECT * FROM chantier";
 
     try {
-      const results = await db.query(queryString);
+      const results = await db.query(queryStringChantier);
       if (results == "") {
-        res.status(404).json({ message: "No result found" });
+        return res.status(404).json({ message: "No result found" });
       } else {
+        for (const chantier of results) {
+          const queryStringLastIncident = `SELECT * FROM v_capture_incident WHERE id_chantier = ${chantier.id_chantier} ORDER BY date_capture LIMIT 1`;
+          const incident = await db.query(queryStringLastIncident);
+          chantier.incident = incident;
+        }
         const chantiers = { chantiers: results };
-        res.status(200).json(chantiers);
+        return res.status(200).json(chantiers);
       }
     } catch (error) {
       next(error);
@@ -23,9 +28,12 @@ module.exports = class Chantier {
     try {
       const results = await db.query(queryString);
       if (results == "") {
-        res.status(404).json({ message: "No result found" });
+        return res.status(404).json({ message: "No result found" });
       } else {
-        res.status(200).json(results[0]);
+        const queryStringLastIncident = `SELECT * FROM v_capture_incident WHERE id_chantier = ${req.params.id_chantier}`;
+        const incidents = await db.query(queryStringLastIncident);
+        results[0].incident = incidents;
+        return res.status(200).json(results[0]);
       }
     } catch (error) {
       next(error);
@@ -38,9 +46,9 @@ module.exports = class Chantier {
     try {
       const results = await db.query(queryString);
       if (results == "") {
-        res.status(404).json({ message: "Can't insert" });
+        return res.status(404).json({ message: "Can't insert" });
       } else {
-        res.status(200).json(results);
+        return res.status(200).json(results);
       }
     } catch (error) {
       next(error);
@@ -53,9 +61,9 @@ module.exports = class Chantier {
     try {
       const results = await db.query(queryString);
       if (results == "") {
-        res.status(404).json({ message: "No result found" });
+        return res.status(404).json({ message: "No result found" });
       } else {
-        res.status(200).json(results[0]);
+        return res.status(200).json(results[0]);
       }
     } catch (error) {
       next(error);
