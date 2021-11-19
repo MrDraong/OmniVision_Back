@@ -2,7 +2,7 @@ const db = require("../db.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-exports.signup = async (req, res, next) => {
+exports.signup = (req, res, next) => {
   bcrypt.hash(req.body.password, 10).then((hash) => {
     const user = {
       pseudo: req.body.pseudo,
@@ -24,7 +24,7 @@ exports.signup = async (req, res, next) => {
   });
 };
 
-exports.login = async (req, res, next) => {
+exports.login = (req, res, next) => {
   const queryString = `SELECT * FROM utilisateur WHERE identifiant_utilisateur = "${req.body.pseudo}"`;
   db.query(queryString)
     .then((user) => {
